@@ -21,25 +21,27 @@ def main():
 
     # load or generate map
     if os.path.isfile(map_pkl):
+        print("Loading stored map")
         m = Map.load(map_pkl)
     else:
+        print("Generating random map")
         m = Map.generate_random(
             size=(20, 20),
             n_homes=200,
             n_locations=75)
         m.save(map_pkl)
 
-    ##### Specify Predictors #####
+    ##### Specify predictors #####
     preds = [
-        #('All agents', predictors.all_agents),
-        #('No agents', predictors.no_agents),
-        #('Remembered', predictors.remembered_agents),
+        ('All agents', predictors.all_agents),
+        ('No agents', predictors.no_agents),
+        ('Remembered', predictors.remembered_agents),
         ('Undirected', predictors.undirected),
         ('Common Neighbors', predictors.create_common_neighbors(0, 0.2)),
-        #('Jaccard', predictors.create_jaccard(0, 0.2)),
-        #('Adamic Adar', predictors.create_adamic_adar(0, 0.2)),
-        #('Preferential Attachment', predictors.create_preferential_attachment(0, 0.2)),
-        #('Katz (b=0.01, l=3)', predictors.create_katz(0.01, 2, 0, 0.2)),
+        ('Jaccard', predictors.create_jaccard(0, 0.2)),
+        ('Adamic Adar', predictors.create_adamic_adar(0, 0.2)),
+        ('Preferential Attachment', predictors.create_preferential_attachment(0, 0.2)),
+        ('Katz (b=0.01, l=2)', predictors.create_katz(0.01, 2, 0, 0.2)),
     ]
 
     ##### simulating for every predictor #####
@@ -69,15 +71,10 @@ def main():
 
         #### save metrics ####
         print(f"[{name}] saving metrics")
-        with open(metrics_dir + name+ '.pkl', 'wb') as f:
+        with open(os.path.join(metrics_dir, name+'.pkl'), 'wb') as f:
             pickle.dump((name, data, err), f)
 
-    #### save metrics ####
-    print("Saving overall metrics")
-    with open(metrics_dir + 'full.pkl', 'wb') as f:
-        pickle.dump(metrics, f)
-    
-
+    print("Done :)")
 
 
 if __name__ == "__main__":
