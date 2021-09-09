@@ -26,7 +26,7 @@ def get_unconnected_nodes(G):
     return result
 
 
-def modular_predictor(c, a, predictor, min_threshold=0, max_fraction=1.0):
+def modular_predictor(c, a, predictor, min_threshold=0, max_fraction=1.0, max_total=float("inf")):
     G = nx.from_numpy_matrix(c).to_undirected()
     result = nx.to_numpy_array(G, dtype=bool)
 
@@ -36,6 +36,7 @@ def modular_predictor(c, a, predictor, min_threshold=0, max_fraction=1.0):
     scores.sort(key=lambda x: x[2], reverse=True)
 
     limit = int(max_fraction * len(scores))
+    limit = min(limit, max_total)
     for i in range(limit):
         u, v, p = scores[i]
         if p < min_threshold:
@@ -54,7 +55,8 @@ def common_neighbors_lp(G):
 
 def katz_lp(G, beta=0.1, max_l=None):
     for u, v in get_unconnected_nodes(G):
-        all_path_num = count([len(p) for p in nx.all_simple_paths(G, u, v, max_l)])
+        all_path_num = count([len(p)
+                             for p in nx.all_simple_paths(G, u, v, max_l)])
         katz = 0.0
         for l, p in enumerate(all_path_num):
             katz += (beta ** l) + p
