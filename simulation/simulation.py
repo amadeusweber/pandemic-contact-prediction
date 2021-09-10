@@ -19,7 +19,7 @@ class Simulation:
                  agent_recovered_strategy=lambda a: None,
                  agent_notified_strategy=lambda a: None,
                  agent_iteration_strategy=lambda a: None,
-                 predictor=lambda c, a: c,
+                 predictor=lambda c, a, i: c,
                  random_state: int = None):
         # assertions
         assert outbreak_time >= exposed_time
@@ -192,7 +192,7 @@ class Simulation:
         self.handle_state(state)
 
         ####### RECONSTRUCT CONTACTS ########
-        contacts = self.predictor(self.remembered_contacts_ > 0, self.agents)
+        contacts = self.predictor(self.remembered_contacts_ > 0, self.agents, self.iter)
         error = np.sum(np.logical_xor(
             contacts, (self.contacts_ > 0))) / (self.n_agents_ ** 2)
 
