@@ -5,6 +5,9 @@ from simulation.map import Map
 import numpy as np
 import networkx as nx
 
+import os
+import pickle
+
 
 class Simulation:
     def __init__(self,
@@ -238,7 +241,7 @@ class Simulation:
 
         return n_sus, n_exp, n_inf, n_rec
 
-    def full_run(self, max_iter=-1, verbose=False):
+    def full_run(self, max_iter=-1, intermediate_results_path=None, intermediate_results_name=None, verbose=False):
         # run simulation
         data = [[*self.current_data()]]
         errors = []
@@ -247,6 +250,11 @@ class Simulation:
             data.append([*self.current_data()])
             #print(f"Infected: {data[-1][2]}")
             max_iter -= 1
+
+            # save intermediate results
+            if intermediate_results_path != None:
+                with open(intermediate_results_path, 'wb') as f:
+                    pickle.dump((intermediate_results_name, np.array(data).T, errors), f)
 
         # transform data into np array and transpose
         return np.array(data).T, errors
