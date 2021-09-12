@@ -15,7 +15,7 @@ def main():
     #### config ####
     # storage
     map_pkl = './data/maps/1_map_rnd_20x20_200H_75L.pkl'
-    metrics_dir = './data/metrics/map_1/'
+    metrics_dir = './data/metrics/map_1_total/'
 
     #### Creating the map ####
 
@@ -37,11 +37,12 @@ def main():
         ('No agents', predictors.no_agents),
         ('Remembered', predictors.remembered_agents),
         ('Undirected', predictors.undirected),
-        ('Common Neighbors', predictors.create_common_neighbors(0, 0.2)),
-        ('Jaccard', predictors.create_jaccard(0, 0.2)),
-        ('Adamic Adar', predictors.create_adamic_adar(0, 0.2)),
-        ('Preferential Attachment', predictors.create_preferential_attachment(0, 0.2)),
-        ('Katz (b=0.01, l=2)', predictors.create_katz(0.01, 2, 0, 0.2)),
+        ('Common Neighbors', predictors.create_common_neighbors(min_threshold=0, max_total_per_iter=1000)),
+        ('Jaccard', predictors.create_jaccard(min_threshold=0, max_total_per_iter=1000)),
+        ('Adamic Adar', predictors.create_adamic_adar(min_threshold=0, max_total_per_iter=1000)),
+        ('Preferential Attachment', predictors.create_preferential_attachment(min_threshold=0, max_total_per_iter=1000)),
+        ('Katz (b=0.01, l=2)', predictors.create_katz(0.01, 2, min_threshold=0, max_total_per_iter=1000)),
+        ('SEAL', predictors.create_seal(min_threshold=0.5, h_hop=1, test_split=0.2, pred_batch_size=10000, pred_only_cn=True)),
     ]
 
     ##### simulating for every predictor #####
@@ -65,7 +66,7 @@ def main():
                        random_state=42,
                        )
 
-        data, err = s.full_run(verbose=False)
+        data, err = s.full_run(verbose=False, intermediate_results_name=name + '_pre', intermediate_results_path=os.path.join(metrics_dir, name + '_pre.pkl'))
         metrics.append((name, data, err))
         print(f"[{name}] simulation finished after {s.iter} iteration(s)")
 
@@ -73,6 +74,9 @@ def main():
         print(f"[{name}] saving metrics")
         with open(os.path.join(metrics_dir, name+'.pkl'), 'wb') as f:
             pickle.dump((name, data, err), f)
+        
+        os.remove(os.path.join(metrics_dir, name + '_pre.pkl'))
+
 
     print("Done :)")
 

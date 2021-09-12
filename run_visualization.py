@@ -6,7 +6,7 @@ import os
 def main():
     #### config ####
     # storage
-    metrics_dir = './data/metrics/map_1/'
+    metrics_dir = './data/metrics/map_1_total/'
 
     #### load data ####
     metrics = []
@@ -21,7 +21,7 @@ def main():
 
     plt.legend()
     plt.ylim((0, 1))
-    plt.xlim(0, 40)
+    plt.xlim(0, 50)
 
     plt.show()
 
