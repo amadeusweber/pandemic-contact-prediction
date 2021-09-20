@@ -1,6 +1,7 @@
 import pickle
 from simulation.location import Location
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 class Map:
@@ -9,16 +10,15 @@ class Map:
         locs, homes = [], []
         with open(filename, 'rb') as f:
             locs, homes = pickle.load(f)
-        
+
         m = Map()
         for h in homes:
             m.add_home(h.coords, h.capacity, h.risk)
-        
+
         for l in locs:
             m.add_location(l.coords, l.capacity, l.risk)
-    
+
         return m
-    
 
     @staticmethod
     def generate_random(size,
@@ -94,36 +94,29 @@ class Map:
         with open(filename, 'wb') as f:
             pickle.dump(data, f)
 
-    def print(self):
+    def plot(self, file=None):
+        # determine map size
         coords = np.array([l.coords for l in self.locations] +
                           [h.coords for h in self.homes])
-        min_coords = np.min(coords, axis=0)
-        size = np.max(coords, axis=0) + 1
+        min_pos = np.min(coords, axis=0)
+        max_pos = np.max(coords, axis=0)
+        map_shape = max_pos - min_pos + 1
 
-        m = np.empty(size, dtype=object)
-        m.fill("")
+        # plot locations and homes using heatmaps
+        fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(8, 4))
+        for label, ax, cmap, data in [('Locations', ax0, plt.cm.Blues, self.locations), ('Homes', ax1, plt.cm.Oranges, self.homes)]:
+            m = np.zeros(shape=(map_shape), dtype=int)
 
-        max_len = 0
-        for l in self.locations:
-            m[tuple(l.coords)] += f"L({l.capacity})"
-            l = len(m[tuple(l.coords)])
-            if l > max_len:
-                max_len = l
+            for d in data:
+                m[tuple(d.coords)] += 1
 
-        for h in self.homes:
-            m[tuple(h.coords)] += f"H({h.capacity})"
-            l = len(m[tuple(h.coords)])
-            if l > max_len:
-                max_len = l
+            pos = ax.imshow(m, cmap=cmap, interpolation='none')
+            ax.set_title(label)
+            fig.colorbar(pos, ax=ax, shrink=0.75, ticks=range(np.max(m) + 1))
 
-        if len(size) == 2:
-            for x in range(size[0]):
-                print(('+' + ('-' * max_len)) * size[0] + '+')
-                row = '|'
-                for y in range(size[1]):
-                    row += m[x, y].ljust(max_len) + '|'
-                print(row)
-
-            print(('+' + ('-' * max_len)) * size[0] + '+')
+        # display or save the plot
+        if file == None:
+            plt.show()
         else:
-            print(m)
+            plt.savefig(file, bbox_inches='tight')
+            plt.cla()

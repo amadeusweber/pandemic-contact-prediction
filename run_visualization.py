@@ -3,18 +3,22 @@ from matplotlib import lines
 import matplotlib.pyplot as plt
 import os
 import numpy as np
+from simulation.map import Map
 
-def flatten(vals):
+
+def smooth(vals):
     result = [np.mean([vals[0], vals[0], vals[1]])]
     for i in range(len(vals) - 2):
         result.append(np.mean(vals[i:i+3]))
-    
+
     result.append(np.mean([vals[-2], vals[-1], vals[-1]]))
     return result
+
 
 def main():
     #### config ####
     # storage
+    map_pkl = './data/maps/1_map_rnd_20x20_200H_75L.pkl'
     metrics_dir = './data/metrics/map_1_total/'
     plots_dir = './data/plots/map_1_total/'
 
@@ -37,10 +41,14 @@ def main():
 
     # flatten error curves
     to_flatten = [
-        #'SEAL',
+        # 'SEAL',
     ]
 
     #### load data ####
+    # map
+    m = Map.load(map_pkl)
+
+    # metrics
     metrics = []
 
     for name in to_show:
@@ -49,10 +57,14 @@ def main():
 
         # flatten SEAL error curve
         if name in to_flatten:
-            flat_err = flatten(metrics[-1][2])
-            metrics.append((f"{name} (flat)", metrics[-1][1], flat_err))
+            flat_err = smooth(metrics[-1][2])
+            metrics.append((f"{name} (smoothed)", metrics[-1][1], flat_err))
 
     #### plot results ####
+    # map
+    m.plot(os.path.join(plots_dir, 'map.png'))
+
+    # metrics
     plt.figure(figsize=(16, 10))
     for name, data, err in metrics:
         plt.plot(err, label=name)
@@ -72,11 +84,16 @@ def main():
         # print key values
         n_agents = np.sum([d[0] for d in data])
         lines.append(f"<section name=\"{name}\">\n")
-        lines.append(f"    Infectious curve height:{np.max(data[2])}({round(np.max(data[2]) / n_agents, 3)})\n")
-        lines.append(f"    Avg infectious per iter:{round(np.average(data[2]))}({round(np.average(data[2]) / n_agents, 3)})\n")
-        lines.append(f"    Total infections       :{data[3, -1]}({round(data[3, -1] / n_agents, 3)})\n")
-        lines.append(f"    R0                     :{round(1 / (1 - (data[3, -1] / n_agents)), 3)}\n")
-        lines.append(f"    Avg recreation error   :{round(np.average(err), 3)}\n")
+        lines.append(
+            f"    Infectious curve height:{np.max(data[2])}({round(np.max(data[2]) / n_agents, 3)})\n")
+        lines.append(
+            f"    Avg infectious per iter:{round(np.average(data[2]))}({round(np.average(data[2]) / n_agents, 3)})\n")
+        lines.append(
+            f"    Total infections       :{data[3, -1]}({round(data[3, -1] / n_agents, 3)})\n")
+        lines.append(
+            f"    R0                     :{round(1 / (1 - (data[3, -1] / n_agents)), 3)}\n")
+        lines.append(
+            f"    Avg recreation error   :{round(np.average(err), 3)}\n")
         lines.append(f"</section>\n")
         lines.append('\n')
 
@@ -92,11 +109,10 @@ def main():
         # save figure
         plt.savefig(os.path.join(plots_dir, f"course_{name}.png"))
         plt.cla()
-    
+
     # write indicators in text file
     with open(os.path.join(plots_dir, 'indicators.txt'), 'w') as f:
         f.writelines(lines)
-
 
 
 if __name__ == '__main__':
