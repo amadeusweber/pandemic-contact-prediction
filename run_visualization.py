@@ -19,11 +19,11 @@ def main():
     #### config ####
     # storage
     map_pkl = './data/maps/1_map_rnd_20x20_200H_75L.pkl'
-    metrics_dir = './data/metrics/map_1_total/'
-    plots_dir = './data/plots/map_1_total/'
+    metrics_dir = './data/metrics/map_1/'
+    plots_dir = './data/plots/map_1/'
 
     # maximum iterations to plot
-    max_iter = 40
+    max_iter = 42
 
     # metrics to show
     to_show = [
@@ -35,8 +35,9 @@ def main():
         'Jaccard',
         'Preferential Attachment',
         'Adamic Adar',
-        'Katz (b=0.01, l=2)',
+        'Katz (b=0.01, l=3)',
         'SEAL',
+        'SEAL (threshold > 0.5)'
     ]
 
     # flatten error curves
@@ -71,7 +72,7 @@ def main():
 
     plt.legend()
     plt.ylim((0, 1))
-    plt.xlim(0, max_iter)
+    plt.xlim(0, max_iter - 1)
 
     # save figure
     plt.savefig(os.path.join(plots_dir, 'errors.png'), bbox_inches='tight')
@@ -102,7 +103,7 @@ def main():
         plt.plot(data[2], color='#d62728', label="Infectious")
         plt.plot(data[3], color='#2ca02c', label="Recovered")
         plt.ylim(0)
-        plt.xlim(0, max_iter)
+        plt.xlim(0, max_iter - 1)
         plt.legend()
         plt.title(f"{name}: Course of diease")
 
