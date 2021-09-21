@@ -14,8 +14,8 @@ import os
 def main():
     #### config ####
     # storage
-    map_pkl = './data/maps/1_map_rnd_20x20_200H_75L.pkl'
-    metrics_dir = './data/metrics/map_1/'
+    map_pkl = './data/maps/2_map_rnd_128x128_100H_30L.pkl'
+    metrics_dir = './data/metrics/map_2/'
 
     #### Creating the map ####
 
@@ -26,9 +26,9 @@ def main():
     else:
         print("Generating random map")
         m = Map.generate_random(
-            size=(20, 20),
-            n_homes=200,
-            n_locations=75)
+            size=(128, 128),
+            n_homes=100,
+            n_locations=30)
         m.save(map_pkl)
 
     ##### Specify predictors #####
