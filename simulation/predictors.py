@@ -18,7 +18,7 @@ def no_agents(c, a, i):
     return np.zeros(shape=c.shape, dtype=bool)
 
 
-def remembered_agents(c, a):
+def remembered_agents(c, a, i):
     return c
 
 

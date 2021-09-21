@@ -108,7 +108,7 @@ class Map:
             m = np.zeros(shape=(map_shape), dtype=int)
 
             for d in data:
-                m[tuple(d.coords)] += 1
+                m[tuple(d.coords - min_pos)] += 1
 
             pos = ax.imshow(m, cmap=cmap, interpolation='none')
             ax.set_title(label)
