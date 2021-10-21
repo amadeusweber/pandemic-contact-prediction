@@ -1,0 +1,80 @@
+<section name="Undirected">
+    Infectious curve height:103(0.229)
+    Avg infectious per iter:59(0.131)
+    Total infections       :222(0.493)
+    R0                     :1.974
+    Avg recreation error   :0.395
+</section>
+
+<section name="Remembered">
+    Infectious curve height:131(0.291)
+    Avg infectious per iter:66(0.146)
+    Total infections       :254(0.564)
+    R0                     :2.296
+    Avg recreation error   :0.431
+</section>
+
+<section name="No agents">
+    Infectious curve height:151(0.336)
+    Avg infectious per iter:79(0.175)
+    Total infections       :304(0.676)
+    R0                     :3.082
+    Avg recreation error   :0.547
+</section>
+
+<section name="All agents">
+    Infectious curve height:76(0.169)
+    Avg infectious per iter:33(0.073)
+    Total infections       :86(0.191)
+    R0                     :1.236
+    Avg recreation error   :0.84
+</section>
+
+<section name="Common Neighbors">
+    Infectious curve height:85(0.189)
+    Avg infectious per iter:36(0.079)
+    Total infections       :99(0.22)
+    R0                     :1.282
+    Avg recreation error   :0.291
+</section>
+
+<section name="Jaccard">
+    Infectious curve height:84(0.187)
+    Avg infectious per iter:37(0.082)
+    Total infections       :99(0.22)
+    R0                     :1.282
+    Avg recreation error   :0.284
+</section>
+
+<section name="Preferential Attachment">
+    Infectious curve height:92(0.204)
+    Avg infectious per iter:41(0.091)
+    Total infections       :107(0.238)
+    R0                     :1.312
+    Avg recreation error   :0.287
+</section>
+
+<section name="Adamic Adar">
+    Infectious curve height:79(0.176)
+    Avg infectious per iter:36(0.079)
+    Total infections       :93(0.207)
+    R0                     :1.261
+    Avg recreation error   :0.278
+</section>
+
+<section name="Katz (b=0.01, l=3)">
+    Infectious curve height:77(0.171)
+    Avg infectious per iter:34(0.075)
+    Total infections       :91(0.202)
+    R0                     :1.253
+    Avg recreation error   :0.286
+</section>
+
+<section name="SEAL">
+    Infectious curve height:85(0.189)
+    Avg infectious per iter:36(0.079)
+    Total infections       :111(0.247)
+    R0                     :1.327
+    Avg recreation error   :0.293
+</section>
+

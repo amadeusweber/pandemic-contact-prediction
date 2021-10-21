@@ -1,9 +1,9 @@
-<section name="No agents">
-    Infectious curve height:257(0.428)
-    Avg infectious per iter:103(0.171)
-    Total infections       :400(0.667)
-    R0                     :3.0
-    Avg recreation error   :0.437
+<section name="Undirected">
+    Infectious curve height:162(0.27)
+    Avg infectious per iter:70(0.116)
+    Total infections       :252(0.42)
+    R0                     :1.724
+    Avg recreation error   :0.323
 </section>
 
 <section name="Remembered">
@@ -14,12 +14,12 @@
     Avg recreation error   :0.337
 </section>
 
-<section name="Undirected">
-    Infectious curve height:162(0.27)
-    Avg infectious per iter:70(0.116)
-    Total infections       :252(0.42)
-    R0                     :1.724
-    Avg recreation error   :0.323
+<section name="No agents">
+    Infectious curve height:257(0.428)
+    Avg infectious per iter:103(0.171)
+    Total infections       :400(0.667)
+    R0                     :3.0
+    Avg recreation error   :0.437
 </section>
 
 <section name="All agents">
@@ -76,13 +76,5 @@
     Total infections       :175(0.292)
     R0                     :1.412
     Avg recreation error   :0.284
-</section>
-
-<section name="SEAL (threshold > 0.5)">
-    Infectious curve height:134(0.223)
-    Avg infectious per iter:31(0.051)
-    Total infections       :179(0.298)
-    R0                     :1.425
-    Avg recreation error   :0.364
 </section>
 
